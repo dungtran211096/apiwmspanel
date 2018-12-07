@@ -3,7 +3,7 @@ import requests
 import MySQLdb
 from datetime import datetime
 import logging
-from .models import server
+from .models import server_id, stream, re_publish
 # Create your views here.
 
 
@@ -13,16 +13,11 @@ def index(request):
 
 def table(request):
 
-    url = 'https://api.wmspanel.com/v1/data_slices?client_id={}&api_key={}&show_servers=true'
-    client_id = '1bc3f987-8508-4960-867f-883d4e22fdfd'
-    api_key = '364c04c53b8e0cedecbc8fa703cd0472'
+    server_name = server_id.objects.all()
+    streams = stream.objects.all()
 
-    r = requests.get(url.format(client_id, api_key)).json()
-
-    server_id = {
-        'id': r['data_slices'][0]['server_ids'][0],
-    }
-
-    context = {'server_id': server_id}
+    # servers = server_name.filter(server_id=server_id),
+    context = {'servers': server_name, 'streams': streams}
+    # data = stream.objects.last()
 
     return render(request, 'vega1/table.html', context)
