@@ -1,0 +1,183 @@
+{% extends "vega1/base.html" %}
+{% load static %}
+{% block placeholder %}
+        <div class="main-content">
+              <div class="main-content">
+             <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </form>
+                            <div class="header-button">
+                                <div class="noti-wrap">
+
+                                </div>
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img src="{% static 'images/icon/avatar-1.jpg' %}" alt="Huy Nam" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#">Huy Nam</a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#">
+                                                        <img src="{% static 'images/icon/avatar-1.jpg' %}" alt="Huy Nam" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#">Huy Nam</a>
+                                                    </h5>
+                                                    <span class="email">huynamvn1606@gmail.com</span>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-account"></i>Account</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__footer">
+                                                <a href="#">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+                                <!-- DATA TABLE -->
+                                <h3 class="title-5 m-b-35">data table</h3>
+                                <div class="table-data__tool">
+                                    <div class="table-data__tool-left">
+                                        <div class="rs-select2--light rs-select2--md">
+                                            <select class="js-select2" name="property">
+                                                <option selected="selected">All Properties</option>
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        <div class="rs-select2--light rs-select2--sm">
+                                            <select class="js-select2" name="time">
+                                                <option selected="selected">Today</option>
+                                                <option value="">3 Days</option>
+                                                <option value="">1 Week</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        <button class="au-btn-filter">
+                                            <i class="zmdi zmdi-filter-list"></i>filters</button>
+                                    </div>
+                                    <div class="table-data__tool-right">
+                                        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                            <i class="zmdi zmdi-plus"></i>add item</button>
+                                        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
+                                            <select class="js-select2" name="type">
+                                                <option selected="selected">Export</option>
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive table-responsive-data2">
+                                    <table class="table table-data2">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <label class="au-checkbox">
+                                                        <input type="checkbox">
+                                                        <span class="au-checkmark"></span>
+                                                    </label>
+                                                </th>
+                                                <th>ID_STREAM</th>
+                                                <th>Name</th>
+                                                <th>BandWidth</th>
+                                                <th>Status</th>
+                                                <th>Input</th>
+                                                <!--<th></th>-->
+                                                <!--<th>Status</th>-->
+                                                <th></th>
+                                            </tr>
+
+
+                                        </thead>
+                                        <tbody>
+
+                                         {% for streams in str %}
+
+                                             <tr class="tr-shadow">
+                                                 <td>
+                                                    <label class="au-checkbox">
+                                                        <input type="checkbox" name="server_check" data-server_id ="{{ streams.id_stream }}">
+                                                        <span class="au-checkmark"></span>
+                                                    </label>
+                                                 </td>
+                                                 <td>{{ streams.id_stream }}</td>
+                                                 <td>
+                                                    <span class="block-email">{{ streams.name}}</span>
+                                                 </td>
+                                                 <td>{{ streams.bandwidth }}</td>
+                                                 <td>{{ streams.status}}</td>
+                                                 <td>{{ streams.input }}</td>
+                                                <!--<td></td>-->
+                                                <!--<td>-->
+                                                    <!--<span class="status&#45;&#45;process">{{server_id.status}}</span>-->
+                                                <!--</td>-->
+                                                 <td>
+                                                    <div class="table-data-feature">
+                                                        <!--<button class="item" data-toggle="tooltip" data-placement="top" title="Restart" onclick= }}>-->
+
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Restart" onclick="location.href='https://api.wmspanel.com/v1/server/58f845db73039137e7000006/rtmp/republish/58f98999796db4faef00064f/restart?client_id=1bc3f987-8508-4960-867f-883d4e22fdfd&api_key=364c04c53b8e0cedecbc8fa703cd0472'">
+                                                            <i class="zmdi zmdi-mail-send"></i>
+                                                        </button>
+
+                                                    </div>
+                                                 </td>
+                                                 <!--<td></td>-->
+                                                 <!--<td></td>-->
+                                            </tr>
+
+                                         {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- END DATA TABLE -->
+                            </div>
+                        </div>
+                        <div class="row m-t-30">
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>
+
+
+{% endblock %}

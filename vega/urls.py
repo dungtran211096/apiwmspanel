@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from vega1 import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('vega1.urls'))
+    path('', include('app_panelapi.urls'))
 ]

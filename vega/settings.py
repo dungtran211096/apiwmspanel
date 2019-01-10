@@ -48,7 +48,7 @@ SECRET_KEY = 'n4#-o28!8-&8ffvh&7^29vbya-$b2ai!@^tt2c%dk23o3&(vnr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.186.123", "127.0.0.1"]
 
 
 # Application definition
@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'vega1',
+    'app_panelapi',
     "django_cron",
 
 ]

@@ -2,6 +2,9 @@ import logging
 import requests
 import pymysql
 import pymysql.cursors
+import json
+import urllib
+
 
 from django_cron import CronJobBase, Schedule
 
@@ -98,6 +101,7 @@ def table():
 
         # response url2
         b2 = r2['streams']
+        # print (b2)
         for i2 in range(len(b2)):
 
             # insert input
@@ -106,19 +110,22 @@ def table():
                 notok = "notok"
                 status = "online"
                 if b2[i2]['bandwidth'] > 100000:
-                    return ok
-                if status != b2[i2]['status']:
+                    if b2[i2]['status'] != status:
                         return notok
+                    else:
+                        return ok
                 else:
                     return notok
 
             data = {
                 'id': b2[i2]['id'],
-                'status': b2[i2]['status'],
                 'name': b2[i2]['name'],
-                'input': input(),
                 'bandwidth': b2[i2]['bandwidth'],
+                'status': b2[i2]['status'],
+                'input': input(),
+
             }
+
             # open db vega1_stream
             try:
                 conn = pymysql.connect(host='172.17.0.1',
@@ -137,9 +144,9 @@ def table():
             else:
                 cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
                 # sql
-                cur.execute("""INSERT INTO vega1_stream(name, bandwidth, status, input, id_stream) VALUES (%s, %s, %s,
+                cur.execute("""INSERT INTO vega1_stream(id_stream, name, bandwidth, status, input) VALUES (%s, %s, %s,
                                      %s, %s)""",
-                            (data['name'], data['bandwidth'], data['status'], data['input'], data['id']))
+                            (data['id'], data['name'], data['bandwidth'], data['status'], data['input']))
 
                 conn.commit()
                 cur.close()
@@ -152,6 +159,13 @@ def table():
                 'rule_id': b3[i3]['id'],
                 'src_strm': b3[i3]['src_strm']
             }
+
+            var = "/restart?client_id=1bc3f987-8508-4960-867f-883d4e22fdfd&api_key=364c04c53b8e0cedecbc8fa703cd0472"
+            type = "/rtmp/republish/"
+            append = ""
+
+            # api restart re_publish
+            api = "https://api.wmspanel.com/v1/server/" + b + type + data1['rule_id'] + var + append
 
         # open db vega1_re_publish
             try:
@@ -171,8 +185,8 @@ def table():
             else:
                 cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
                 # sql
-                cur.execute("""INSERT INTO vega1_re_publish(id_rule, src_strm) VALUES (%s, %s)""",
-                            (data1['rule_id'], data1['src_strm']))
+                cur.execute("""INSERT INTO vega1_re_publish(id_rule, src_strm, re_start) VALUES (%s, %s, %s)""",
+                            (data1['rule_id'], data1['src_strm'], api))
 
                 conn.commit()
                 cur.close()
