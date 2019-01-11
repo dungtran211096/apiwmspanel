@@ -1,4 +1,4 @@
-{% extends "vega1/base.html" %}
+{% extends "app_panelapi/base.html" %}
 {% load static %}
 
 {% block placeholder %}
@@ -132,7 +132,7 @@
                                                 <th></th>
                                             </tr>
                                         </thead>
-                                        {% for server_ids in server_ids %}
+                                        {% for rtmp in rule %}
                                         <body>
                                             <tr class="tr-shadow">
                                                 <td>
@@ -141,7 +141,7 @@
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </td>
-                                                <td>{{ server_ids }}</td>
+                                                <td>{{ rtmp.id_rule }}</td>
                                                 <td>
                                                     <span class="block-email">{{ rtmp.src_strm}}</span>
                                                 </td>
@@ -170,13 +170,16 @@
                                         </body>
 
                                         {% endfor %}
-                                <!--<form class="header" action="/server/restart/" method="POST">-->
+                                        <!--<form class="header" action="/server/restart/" method="POST">-->
 
-                                        <button class="au-btn au-btn-icon au-btn--green au-btn--small" id="5" >
+                                        <button class="au-btn au-btn-icon au-btn--green au-btn--small" id="5">
                                             <i class="restart"></i>Restart select</button>
 
+                                        <input type="button" class="au-btn au-btn-icon au-btn--green au-btn--small" id="6" onclick="submit()" value="Restart" />
+                                        <!--</form>-->
+
                                     </table>
-                                <!--</form>-->
+
                                 </div>
                                 <!-- END DATA TABLE -->
                             </div>

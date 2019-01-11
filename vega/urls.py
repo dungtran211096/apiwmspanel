@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from vega1 import views
+from app_panelapi import views
 
 
 urlpatterns = [

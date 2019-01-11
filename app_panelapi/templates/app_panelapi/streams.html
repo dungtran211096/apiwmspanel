@@ -1,16 +1,15 @@
-{% extends "vega1/base.html" %}
+{% extends "app_panelapi/base.html" %}
 {% load static %}
-
 {% block placeholder %}
-{% csrf_token %}
         <div class="main-content">
+              <div class="main-content">
              <header class="header-desktop">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
-                            <form class="form-header" action="" method="GET">
+                            <form class="form-header" action="" method="POST">
                                 <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit" >
+                                <button class="au-btn--submit" type="submit">
                                     <i class="zmdi zmdi-search"></i>
                                 </button>
                             </form>
@@ -67,26 +66,16 @@
                 </div>
             </header>
 
-
-
                                 <!-- DATA TABLE -->
                                 <h3 class="title-5 m-b-35">data table</h3>
                                 <div class="table-data__tool">
                                     <div class="table-data__tool-left">
                                         <div class="rs-select2--light rs-select2--md">
-                                            <!--<button class="au-btn au-btn-icon au-btn&#45;&#45;green au-btn&#45;&#45;small" id="5" >-->
-                                            <!--<i class="restart"></i>Restart select</button>-->
-                                            <!--<script>-->
-                                            <!--$("#5").on("click", function(e){-->
-                                                 <!--e.preventDefault();-->
-                                                      <!--var selected_checkbox = [];-->
-                                                 <!--$('input[type="checkbox"]:checked').each(function() {-->
-   		                                                    <!--selected_checkbox.push($(this).data('server_id'));-->
-                                                      <!--});-->
-                                                      <!--console.log(selected_checkbox);-->
-                                            <!--})</script>-->
-
-
+                                            <select class="js-select2" name="property">
+                                                <option selected="selected">All Properties</option>
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>
                                             <div class="dropDownSelect2"></div>
                                         </div>
                                         <div class="rs-select2--light rs-select2--sm">
@@ -123,68 +112,72 @@
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </th>
-                                                <th>RULE_ID</th>
+                                                <th>ID_STREAM</th>
                                                 <th>Name</th>
-                                                <!--<th></th>-->
-                                                <!--<th>Kind</th>-->
+                                                <th>BandWidth</th>
+                                                <th>Status</th>
+                                                <th>Input</th>
                                                 <!--<th></th>-->
                                                 <!--<th>Status</th>-->
                                                 <th></th>
                                             </tr>
+
+
                                         </thead>
-                                        {% for rtmp in rule %}
-                                        <body>
-                                            <tr class="tr-shadow">
-                                                <td>
+                                        <tbody>
+
+                                         {% for streams in str %}
+
+                                             <tr class="tr-shadow">
+                                                 <td>
                                                     <label class="au-checkbox">
-                                                        <input type="checkbox" name="server_check" data-server_id ="{{ rtmp.re_start }}">
+                                                        <input type="checkbox" name="server_check" data-server_id ="{{ streams.id_stream }}">
                                                         <span class="au-checkmark"></span>
                                                     </label>
-                                                </td>
-                                                <td>{{ rtmp.id_rule }}</td>
-                                                <td>
-                                                    <span class="block-email">{{ rtmp.src_strm}}</span>
-                                                </td>
-                                                <!--<td></td>-->
-                                                <!--<td>{{ rtmp.scr_strm}}</td>-->
+                                                 </td>
+                                                 <td>{{ streams.id_stream }}</td>
+                                                 <td>
+                                                    <span class="block-email">{{ streams.name}}</span>
+                                                 </td>
+                                                 <td>{{ streams.bandwidth }}</td>
+                                                 <td>{{ streams.status}}</td>
+                                                 <td>{{ streams.input }}</td>
                                                 <!--<td></td>-->
                                                 <!--<td>-->
                                                     <!--<span class="status&#45;&#45;process">{{server_id.status}}</span>-->
                                                 <!--</td>-->
-                                                <td>
+                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <!--<input id="restart" type="checkbox" >-->
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"  title="Restart" onclick="location.href ='{{ rtmp.re_start }}'" >
+                                                        <!--<button class="item" data-toggle="tooltip" data-placement="top" title="Restart" onclick= }}>-->
+
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Restart" onclick="location.href='https://api.wmspanel.com/v1/server/58f845db73039137e7000006/rtmp/republish/58f98999796db4faef00064f/restart?client_id=1bc3f987-8508-4960-867f-883d4e22fdfd&api_key=364c04c53b8e0cedecbc8fa703cd0472'">
                                                             <i class="zmdi zmdi-mail-send"></i>
-                                                            <!--<input type="checkbox">-->
                                                         </button>
+
                                                     </div>
-                                                     <!--<label class="au-checkbox">-->
-                                                                <!--<input type="checkbox">-->
-                                                                <!--<span class="au-checkmark"></span>-->
-                                                     <!--</label>-->
-                                                </td>
-                                                <!--<td></td>-->
-                                                <!--<td></td>-->
+                                                 </td>
+                                                 <!--<td></td>-->
+                                                 <!--<td></td>-->
                                             </tr>
-                                        </body>
 
-                                        {% endfor %}
-                                        <!--<form class="header" action="/server/restart/" method="POST">-->
+                                         {% endfor %}
 
-                                        <button class="au-btn au-btn-icon au-btn--green au-btn--small" id="5">
-                                            <i class="restart"></i>Restart select</button>
-
-                                        <input type="button" class="au-btn au-btn-icon au-btn--green au-btn--small" id="6" onclick="submit()" value="Restart" />
-                                        <!--</form>-->
-
+                                        </tbody>
                                     </table>
-
                                 </div>
                                 <!-- END DATA TABLE -->
                             </div>
                         </div>
+                        <div class="row m-t-30">
+                            <div class="col-md-12">
 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>
 
 
 {% endblock %}
