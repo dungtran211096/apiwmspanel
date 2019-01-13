@@ -44,10 +44,10 @@ def table():
 
         # delete data to database
 
-        cur.execute("""DELETE FROM vega1_server_id""")
-        cur.execute("""DELETE FROM vega1_stream""")
-        cur.execute("""DELETE FROM vega1_re_publish""")
-        cur.execute("""DELETE FROM vega1_server""")
+        cur.execute("""DELETE FROM app_panelapi_server_id""")
+        cur.execute("""DELETE FROM app_panelapi_stream""")
+        cur.execute("""DELETE FROM app_panelapi_re_publish""")
+        cur.execute("""DELETE FROM app_panelapi_server""")
     conn.commit()
     cur.close()
     conn.close()
@@ -77,7 +77,7 @@ def table():
         else:
             cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
             # sql
-            cur.execute("""INSERT INTO vega1_server_id(server_id) VALUES (%s)""", b)
+            cur.execute("""INSERT INTO app_panelapi_server_id(server_id) VALUES (%s)""", b)
 
         conn.commit()
         cur.close()
@@ -129,7 +129,7 @@ def table():
             else:
                 cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
                 # sql
-                cur.execute("""INSERT INTO vega1_stream(id_stream, name, bandwidth, status, input) VALUES (%s, %s, %s,
+                cur.execute("""INSERT INTO app_panelapi_stream(id_stream, name, bandwidth, status, input) VALUES (%s, %s, %s,
                                      %s, %s)""",
                             (data['id'], data['name'], data['bandwidth'], data['status'], data['input']))
 
@@ -170,7 +170,7 @@ def table():
             else:
                 cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
                 # sql
-                cur.execute("""INSERT INTO vega1_re_publish(id_rule, src_strm, re_start) VALUES (%s, %s, %s)""",
+                cur.execute("""INSERT INTO app_panelapi_re_publish(id_rule, src_strm, re_start) VALUES (%s, %s, %s)""",
                             (data1['rule_id'], data1['src_strm'], api))
 
                 conn.commit()

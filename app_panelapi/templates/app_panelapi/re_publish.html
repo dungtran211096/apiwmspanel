@@ -3,7 +3,7 @@
 
 {% block placeholder %}
 {% csrf_token %}
-        <div class="main-content">
+<div class="main-content" xmlns="http://www.w3.org/1999/html">
              <header class="header-desktop">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
@@ -172,11 +172,12 @@
                                         {% endfor %}
                                         <!--<form class="header" action="/server/restart/" method="POST">-->
 
-                                        <button class="au-btn au-btn-icon au-btn--green au-btn--small" id="5">
-                                            <i class="restart"></i>Restart select</button>
+                                        <!--<button class="au-btn au-btn-icon au-btn&#45;&#45;green au-btn&#45;&#45;small" id="5">-->
+                                            <!--<i class="restart"></i>Restart select</button>-->
+                                        <input type="button" class="au-btn au-btn-icon au-btn--green au-btn--small" id="6" onclick="submit()">Restart</input>
+                                        <!--<iframe name="myUniqueFrameIdentifier" id="myUniqueFrameIdentifier" src="" ></iframe>-->
+                                            <!--</form>-->
 
-                                        <input type="button" class="au-btn au-btn-icon au-btn--green au-btn--small" id="6" onclick="submit()" value="Restart" />
-                                        <!--</form>-->
 
                                     </table>
 

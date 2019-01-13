@@ -249,12 +249,13 @@
      <!--});-->
      <!--</script>-->
     <script>
-        $("#5").on('click', function() {
+        $("#5").onclick('click', function() {
         var tmp = [];
             $("input").each(function() {
                 if ($(this).is(':checked')){
                 var checked = ($(this).data('server_id'));
-                tmp.push(checked);
+                window.frame["myUniqueFrameIdentifier"].location = checked;
+                <!--tmp.push(checked);-->
                 }
             });
         alert(tmp);
@@ -262,14 +263,13 @@
     </script>
     <script>
         function submit(){
-        var umd = [];
             $("input").each(function() {
                 if ($(this).is(':checked')){
                 var checked = ($(this).data('server_id'));
-                umd.push(checked);
+                window.open.location = checked;
+                alert("Event Terminated")
                 }
             });
-        alert(umd);
     };
     </script>
 
