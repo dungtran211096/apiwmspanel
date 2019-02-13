@@ -1,17 +1,15 @@
 import logging
 import requests
 import pymysql
-import pymysql.cursors
-
 
 from datetime import datetime
-
 
 
 def table():
 
     # request url
-    url = 'https://api.wmspanel.com/v1/data_slices?client_id={}&api_key={}&show_servers=true'
+    # url = 'https://api.wmspanel.com/v1/data_slices?client_id={}&api_key={}&show_servers=true'
+    url1 = 'https://api.wmspanel.com/v1/server?client_id={}&api_key={}'
     url2 = 'https://api.wmspanel.com/v1/server/{}/mpegts/incoming?client_id={}&api_key={}'
     url3 = 'https://api.wmspanel.com/v1/server/{}/rtmp/republish?client_id={}&api_key={}'
 
@@ -20,10 +18,13 @@ def table():
     api_key = '364c04c53b8e0cedecbc8fa703cd0472'
 
     # response
-    r = requests.get(url.format(client_id, api_key)).json()
-    a = r['data_slices'][0]['server_ids']
+    # r = requests.get(url.format(client_id, api_key)).json()
 
-    global b, b2, b3, data, data1
+    # response
+    r1 = requests.get(url1.format(client_id, api_key)).json()
+    a1 = r1['servers']
+
+    global b, b2, b3, data, data1, b1
     # open database delete table
     try:
         conn = pymysql.connect(host='172.17.0.1',
@@ -44,21 +45,23 @@ def table():
 
         # delete data to database
 
-        cur.execute("""DELETE FROM app_panelapi_server_id""")
-        cur.execute("""DELETE FROM app_panelapi_stream""")
-        cur.execute("""DELETE FROM app_panelapi_re_publish""")
-        cur.execute("""DELETE FROM app_panelapi_server""")
+        cur.execute("""DELETE FROM wmspanelapi_server_id""")
+        cur.execute("""DELETE FROM wmspanelapi_stream""")
+        cur.execute("""DELETE FROM wmspanelapi_re_publish""")
     conn.commit()
     cur.close()
     conn.close()
-    for i in range(len(a)):
-        b = a[i]
+
+    for i in range(len(a1)):
+        # b = a[i]
+        b1 = a1[i]['id']
+        b1a = a1[i]['name']
 
         # request url2 incoming stream
-        r2 = requests.get(url2.format(b, client_id, api_key)).json()
+        r2 = requests.get(url2.format(b1, client_id, api_key)).json()
 
         # request url3
-        r3 = requests.get(url3.format(b, client_id, api_key)).json()
+        r3 = requests.get(url3.format(b1, client_id, api_key)).json()
 
         # open db vega1_server_id
         try:
@@ -77,7 +80,7 @@ def table():
         else:
             cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
             # sql
-            cur.execute("""INSERT INTO app_panelapi_server_id(server_id) VALUES (%s)""", b)
+            cur.execute("""INSERT INTO wmspanelapi_server_id(server_id, name_server) VALUES (%s, %s)""", (b1, b1a))
 
         conn.commit()
         cur.close()
@@ -129,7 +132,7 @@ def table():
             else:
                 cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
                 # sql
-                cur.execute("""INSERT INTO app_panelapi_stream(id_stream, name, bandwidth, status, input) VALUES (%s, %s, %s,
+                cur.execute("""INSERT INTO wmspanelapi_stream(id_stream, name, bandwidth, status, input) VALUES (%s, %s, %s,
                                      %s, %s)""",
                             (data['id'], data['name'], data['bandwidth'], data['status'], data['input']))
 
@@ -142,7 +145,9 @@ def table():
         for i3 in range(len(b3)):
             data1 = {
                 'rule_id': b3[i3]['id'],
-                'src_strm': b3[i3]['src_strm']
+                'src_strm': b3[i3]['src_strm'],
+                'status': b3[i3]['paused']
+
             }
 
             var = "/restart?client_id=1bc3f987-8508-4960-867f-883d4e22fdfd&api_key=364c04c53b8e0cedecbc8fa703cd0472"
@@ -150,7 +155,8 @@ def table():
             append = ""
 
             # api restart re_publish
-            api = "https://api.wmspanel.com/v1/server/" + b + type + data1['rule_id'] + var + append
+            api = "https://api.wmspanel.com/v1/server/" + b1 + type + data1['rule_id'] + var + append
+            name = b1a
 
         # open db vega1_re_publish
             try:
@@ -170,8 +176,10 @@ def table():
             else:
                 cur = conn.cursor(cursor=pymysql.cursors.DictCursor)
                 # sql
-                cur.execute("""INSERT INTO app_panelapi_re_publish(id_rule, src_strm, re_start) VALUES (%s, %s, %s)""",
-                            (data1['rule_id'], data1['src_strm'], api))
+                cur.execute("""INSERT INTO wmspanelapi_re_publish(id_rule, src_strm, re_start, status, name) VALUES (%s, 
+                %s,
+                %s, %s, %s)""",
+                            (data1['rule_id'], data1['src_strm'], api, data1['status'], name))
 
                 conn.commit()
                 cur.close()
@@ -182,5 +190,3 @@ def table():
 
 table()
 
-# https://api.wmspanel.com/v1/server/58f845db73039137e7000006/rtmp/republish/58f98999796db4faef00064f/restart?client_id=1bc3f987-8508-4960-867f-883d4e22fdfd&api_key=364c04c53b8e0cedecbc8fa703cd0472
-# https://api.wmspanel.com/v1/server/58f845db73039137e7000006/rtmp/republish/58f98999796db4faef000650/restart?client_id=1bc3f987-8508-4960-867f-883d4e22fdfd&api_key=364c04c53b8e0cedecbc8fa703cd0472

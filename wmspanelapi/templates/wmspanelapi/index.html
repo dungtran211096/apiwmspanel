@@ -1,0 +1,137 @@
+{% extends "wmspanelapi/base.html" %}
+{% load static %}
+{% load mytemplatetags %}
+
+
+{% block placeholder %}
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Stream Erro</h3>
+            </div>
+            {% block content %}
+            <form method="get">
+              {{ filter.form.as_p }}
+              <button type="submit">Search
+                <i class="zmdi zmdi-search"></i>
+              </button>
+
+
+            </form>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Bandwidth</th>
+                  <th>Status</th>
+                  <th>Input</th>
+                </tr>
+                </thead>
+                 {% for vega in filter.qs %}
+                <tbody>
+                 <tr>
+                  <td>{{ vega.name }}</td>
+                  <td>{{ vega.bandwidth }}</td>
+                  <td>{{ vega.status }}</td>
+                  <td>{{ vega.input }}</td>
+                 </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          {% endblock %}
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Restart Stream</h3>
+            </div>
+            {% block content1 %}
+            <form method="get">
+              {{ filter1.form.as_p }}
+              <button type="submit">Search
+                <i class="zmdi zmdi-search"></i>
+              </button>
+            </form>
+          <br>
+            <input type="button" class="au-btn au-btn-icon au-btn--green au-btn--small" value="RESTART" onclick="openWindow()">
+            <br>
+            <br>
+            <textarea id="show1" name="server_check" ></textarea>
+
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                   <th>
+                     <label class="au-checkbox">
+                      <input type="checkbox" onclick="toggle(this);checkbox();" />Select all<br />
+                     </label>
+                   </th>
+                  <th>Name</th>
+                  <th>Name Transcoder</th>
+                  <th>Status</th>
+                </tr>
+                </thead>
+                {% for vega in vega %}
+
+                <tbody>
+                <tr>
+                  <td>
+                    <label class="au-checkbox">
+                      <input  type="checkbox" name="server_check" onClick="checkbox();" value="{{ vega.re_start }}">
+                      <span class="au-checkmark"></span>
+                    </label>
+                  </td>
+                  <td>{{ vega.src_strm }}</td>
+                  <td>{{ vega.name }}</td>
+                  <td>{{ vega.status }}</td>
+                </tr>
+                </tbody>
+
+                {% endfor %}
+                 {% if vega.has_other_pages %}
+              <div class="pagination">
+                <span class="step-links">
+                  {% if vega.has_previous %}
+                <a href="?{% url_replace request 'page' 1 %}">first</a>
+                <a href="?{% url_replace request 'page' vega.previous_page_number %}">previous</a>
+                  {% endif %}
+
+                 <span class="current">
+                  Page {{ vega.number }} of {{ vega.paginator.num_pages }}.
+                 </span>
+
+                {% if vega.has_next %}
+                <a href="?{% url_replace request 'page' vega.next_page_number %}">next</a>
+                <a href="?{% url_replace request 'page' vega.paginator.num_pages %}">last &raquo;</a>
+                {% endif %}
+
+              {% endif %}
+                </span>
+              </div>
+               </table>
+
+            </div>
+
+          {% endblock %}
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+
+{% endblock %}
